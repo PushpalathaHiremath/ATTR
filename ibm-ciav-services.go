@@ -55,7 +55,14 @@ func (t *ServicesChaincode) Query(stub *shim.ChaincodeStub, function string, arg
 		return read(stub, args)
 	}else{
 		val, _ := stub.ReadCertAttribute("position")
-		return val, nil
+		jsonResp := "{ Name : "+ string(Avalbytes) + "}"
+		fmt.Printf("Query Response:%s\n", jsonResp)
+
+		bytes, err := json.Marshal(jsonResp)
+		if err != nil {
+			return nil, errors.New("Error converting kyc record")
+		}
+		return bytes, nil
 	}
 	return nil, errors.New("Invalid query function name. Expecting \"read\"")
 }
