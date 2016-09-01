@@ -30,7 +30,10 @@ func (t *ServicesChaincode) Invoke(stub *shim.ChaincodeStub, function string, ar
 	val, err := stub.ReadCertAttribute("position")
 	fmt.Printf("Position => %v error %v \n", string(val), err)
 	isOk, err := stub.VerifyAttribute("position", []byte("Software Engineer")) // Here the ABAC API is called to verify the attribute, just if the value is verified the counter will be incremented.
-	if !isOk {
+	if err != nil {
+		return nil, err
+	}
+	if isOk {
 		counter, err := stub.GetState("counter")
 		if err != nil {
 			return nil, err
@@ -55,11 +58,17 @@ func (t *ServicesChaincode) Query(stub *shim.ChaincodeStub, function string, arg
 		return read(stub, args)
 	}else{
 		attrVal1, err := stub.ReadCertAttribute("position")
+		isPresent, err := stub.VerifyAttribute("position", []byte("Software Engineer")) // Here the ABAC API is called to verify the attribute, just if the value is verified the counter will be incremented.
+		if err != nil {
+			return nil, err
+		}
+
 		attrVal2, err := stub.ReadCertAttribute("company")
 		cert, _ := stub.GetCallerCertificate()
 		metadataStr, _ := stub.GetCallerMetadata()
 
 		jsonResp := "{ Attribute Name  01 : "+ string(attrVal1) +
+									"Attribute Value  01 : "+ string(isPresent) +
 									"Attribute Name  02 : "+ string(attrVal2) +
   						     "Certificate : "  + string(cert) +
 									 "Metadata : " + string(metadataStr) +
