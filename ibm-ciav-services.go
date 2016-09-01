@@ -55,7 +55,7 @@ func (t *ServicesChaincode) Query(stub *shim.ChaincodeStub, function string, arg
 		return read(stub, args)
 	}else{
 		val, _ := stub.ReadCertAttribute("position")
-		jsonResp := "{ Name : "+ string(Avalbytes) + "}"
+		jsonResp := "{ Name : "+ string(val) + "}"
 		fmt.Printf("Query Response:%s\n", jsonResp)
 
 		bytes, err := json.Marshal(jsonResp)
