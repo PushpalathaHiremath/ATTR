@@ -50,11 +50,17 @@ func (t *ServicesChaincode) Invoke(stub *shim.ChaincodeStub, function string, ar
  		Get Customer record by customer id or PAN number
 */
 func (t *ServicesChaincode) Query(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
-	if function != "read" {
-		return nil, errors.New("Invalid query function name. Expecting \"read\"")
+	if function == "read" {
+		read(stub, args)
+	}else{
+		val, err := stub.ReadCertAttribute("position")
+		return val, nil
 	}
-	var err error
+	return nil, errors.New("Invalid query function name. Expecting \"read\"")
+}
 
+func read(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
+	var err error
 	// Get the state from the ledger
 	Avalbytes, err := stub.GetState("counter")
 	if err != nil {
@@ -69,7 +75,12 @@ func (t *ServicesChaincode) Query(stub *shim.ChaincodeStub, function string, arg
 
 	jsonResp := "{\"Name\":\"counter\",\"Amount\":\"" + string(Avalbytes) + "\"}"
 	fmt.Printf("Query Response:%s\n", jsonResp)
-	return Avalbytes, nil
+
+	bytes, err := json.Marshal(jsonResp)
+	if err != nil {
+		return nil, errors.New("Error converting kyc record")
+	}
+	return bytes, nil
 }
 
 func main() {
