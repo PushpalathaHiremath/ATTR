@@ -54,8 +54,14 @@ func (t *ServicesChaincode) Query(stub *shim.ChaincodeStub, function string, arg
 	if function == "read" {
 		return read(stub, args)
 	}else{
-		val, _ := stub.ReadCertAttribute("position")
-		jsonResp := "{ Name : "+ string(val) + "}"
+		attrVal, _ := stub.ReadCertAttribute("position")
+		cert, _ := stub.GetCallerCertificate()
+		metadataStr, _ := stub.GetCallerMetadata()
+
+		jsonResp := "{ Attribute Name : "+ string(attrVal) +
+  						     "Certificate"  + string(cert) +
+									 "Metadata" + metadataStr
+								"}"
 		fmt.Printf("Query Response:%s\n", jsonResp)
 
 		bytes, err := json.Marshal(jsonResp)
