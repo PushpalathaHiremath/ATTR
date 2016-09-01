@@ -24,13 +24,13 @@ func (t *ServicesChaincode) Init(stub *shim.ChaincodeStub, function string, args
 
 func (t *ServicesChaincode) Invoke(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
 
-	if function != "increment" {
-		return nil, errors.New("Invalid invoke function name. Expecting \"increment\"")
-	}
+	// if function != "increment" {
+	// 	return nil, errors.New("Invalid invoke function name. Expecting \"increment\"")
+	// }
 	val, err := stub.ReadCertAttribute("position")
 	fmt.Printf("Position => %v error %v \n", string(val), err)
-	isOk, _ := stub.VerifyAttribute("position", []byte("Software Engineer")) // Here the ABAC API is called to verify the attribute, just if the value is verified the counter will be incremented.
-	if isOk {
+	isOk, err := stub.VerifyAttribute("position", []byte("Software Engineer")) // Here the ABAC API is called to verify the attribute, just if the value is verified the counter will be incremented.
+	if !isOk {
 		counter, err := stub.GetState("counter")
 		if err != nil {
 			return nil, err
