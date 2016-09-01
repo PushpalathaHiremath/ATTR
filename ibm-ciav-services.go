@@ -43,7 +43,7 @@ func (t *ServicesChaincode) Invoke(stub *shim.ChaincodeStub, function string, ar
 		counter = []byte(strconv.Itoa(cInt))
 		stub.PutState("counter", counter)
 	}
-	return nil, nil
+	return val, nil
 }
 
 /*
