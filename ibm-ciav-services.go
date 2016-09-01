@@ -60,7 +60,7 @@ func (t *ServicesChaincode) Query(stub *shim.ChaincodeStub, function string, arg
 
 		jsonResp := "{ Attribute Name : "+ string(attrVal) +
   						     "Certificate"  + string(cert) +
-									 "Metadata" + metadataStr
+									 "Metadata" + string(metadataStr)
 								"}"
 		fmt.Printf("Query Response:%s\n", jsonResp)
 
