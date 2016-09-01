@@ -54,7 +54,7 @@ func (t *ServicesChaincode) Query(stub *shim.ChaincodeStub, function string, arg
 	if function == "read" {
 		read(stub, args)
 	}else{
-		val, err := stub.ReadCertAttribute("position")
+		val, _ := stub.ReadCertAttribute("position")
 		return val, nil
 	}
 	return nil, errors.New("Invalid query function name. Expecting \"read\"")
