@@ -52,7 +52,7 @@ func (t *ServicesChaincode) Invoke(stub *shim.ChaincodeStub, function string, ar
 */
 func (t *ServicesChaincode) Query(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
 	if function == "read" {
-		return t.read(stub, args)
+		return read(stub, args)
 	}else{
 		val, _ := stub.ReadCertAttribute("position")
 		return val, nil
