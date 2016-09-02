@@ -68,7 +68,7 @@ func (t *ServicesChaincode) Query(stub *shim.ChaincodeStub, function string, arg
 		metadataStr, _ := stub.GetCallerMetadata()
 
 		jsonResp := "{ Attribute Name  01 : "+ string(attrVal1) +
-									"Attribute Value  01 : "+ string(isPresent) +
+									"Attribute Value  01 : "+ strconv.FormatBool(isPresent) +
 									"Attribute Name  02 : "+ string(attrVal2) +
   						     "Certificate : "  + string(cert) +
 									 "Metadata : " + string(metadataStr) +
