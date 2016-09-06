@@ -58,7 +58,7 @@ func (t *ServicesChaincode) Query(stub *shim.ChaincodeStub, function string, arg
 		return read(stub, args)
 	}else {
 		attrVal1, err := stub.ReadCertAttribute("position")
-		isPresent, err := stub.VerifyAttribute("position", []byte("Software Engineer")) // Here the ABAC API is called to verify the attribute, just if the value is verified the counter will be incremented.
+	//	isPresent, err := stub.VerifyAttribute("position", []byte("Software Engineer")) // Here the ABAC API is called to verify the attribute, just if the value is verified the counter will be incremented.
 		if err != nil {
 			return nil, err
 		}
