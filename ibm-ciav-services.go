@@ -18,7 +18,23 @@ type ServicesChaincode struct {
 
 func (t *ServicesChaincode) Init(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
 	err := stub.PutState("counter", []byte("0"))
-	return nil, err
+	
+	val, err := stub.ReadCertAttribute("position")
+	fmt.Printf("Position => %v error %v \n", string(val), err)
+	isOk, err := stub.VerifyAttribute("position", []byte("Software Engineer")) // Here the ABAC API is called to verify the attribute, just if the value is verified the counter will be incremented.
+	if err != nil {
+		return nil, err
+	}
+		jsonResp := "{\"Name\": +
+							"Attribute " + string(val) +
+							"Attr Value " + strconv.FormatBool(isOk) +
+							"\"}"
+
+	bytes, err := json.Marshal(jsonResp)
+	if err != nil {
+		return nil, errors.New("Error .....")
+	}
+	return bytes, nil
 }
 
 
