@@ -57,26 +57,31 @@ func (t *ServicesChaincode) Query(stub *shim.ChaincodeStub, function string, arg
 	if function == "read" {
 		return read(stub, args)
 	}else {
-		attrVal1, err := stub.ReadCertAttribute("position")
-	//	isPresent, err := stub.VerifyAttribute("position", []byte("Software Engineer")) // Here the ABAC API is called to verify the attribute, just if the value is verified the counter will be incremented.
-		if err != nil {
-			return nil, err
-		}
-		jsonResp := "{ " +
-					  "Attribute Name  01: "+ string(attrVal1) +
-			    // 	"Attribute Value  01 : "+ strconv.FormatBool(isPresent) +
-
-			     "}"
-		fmt.Printf("Query Response:%s\n", jsonResp)
-
-		bytes, err := json.Marshal(jsonResp)
-		if err != nil {
-			return nil, errors.New("Error converting kyc record")
-		}
-		return bytes, nil
+	   return readAttr(stub, args)
 	}
 	return nil, errors.New("Invalid query function name. Expecting \"read\"")
 }
+
+func readAttr(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
+	attrVal1, err := stub.ReadCertAttribute("position")
+	isPresent, err := stub.VerifyAttribute("position", []byte("Software Engineer")) // Here the ABAC API is called to verify the attribute, just if the value is verified the counter will be incremented.
+	if err != nil {
+		return nil, err
+	}
+	jsonResp := "{ " +
+					"Attribute Name  01: "+ string(attrVal1) +
+					"Attribute Value  01 : "+ strconv.FormatBool(isPresent) +
+
+				 "}"
+	fmt.Printf("Query Response:%s\n", jsonResp)
+
+	bytes, err := json.Marshal(jsonResp)
+	if err != nil {
+		return nil, errors.New("Error converting kyc record")
+	}
+	return bytes, nil
+}
+
 
 func read(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
 	var err error
