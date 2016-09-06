@@ -25,10 +25,10 @@ func (t *ServicesChaincode) Init(stub *shim.ChaincodeStub, function string, args
 	if err != nil {
 		return nil, err
 	}
-		jsonResp := "{\"Name\": +
+		jsonResp := "{Name:" +
 							"Attribute " + string(val) +
-							"Attr Value " + strconv.FormatBool(isOk) +
-							"\"}"
+							"Attr Value" + strconv.FormatBool(isOk) +
+							"}"
 
 	bytes, err := json.Marshal(jsonResp)
 	if err != nil {
