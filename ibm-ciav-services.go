@@ -87,7 +87,6 @@ func read(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
 	var err error
 
 	val, err := stub.ReadCertAttribute("position")
-	fmt.Printf("Position => %v error %v \n", string(val), err)
 	isOk, err := stub.VerifyAttribute("position", []byte("Software Engineer")) // Here the ABAC API is called to verify the attribute, just if the value is verified the counter will be incremented.
 	if err != nil {
 		return nil, err
@@ -105,9 +104,9 @@ func read(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
 		return nil, errors.New(jsonResp)
 	}
 
-	jsonResp := "{\"Name\":\"counter\",\"Amount\":\"" + string(Avalbytes) + 
+	jsonResp := "{\"Name\":\"counter\",\"Amount\":\"" + string(Avalbytes) +
 							"Attribute " + string(val) +
-							"Attr Value " + strconv.FormatBool(isOk) +
+							"Attr Value " + isOk +
 							"\"}"
 	fmt.Printf("Query Response:%s\n", jsonResp)
 
