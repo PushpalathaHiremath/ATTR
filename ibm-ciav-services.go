@@ -79,21 +79,20 @@ func (t *ServicesChaincode) Query(stub *shim.ChaincodeStub, function string, arg
 }
 
 func readAttr(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
-	attrVal1, err := stub.ReadCertAttribute("position")
-	isPresent, err := stub.VerifyAttribute("position", []byte("Software Engineer")) // Here the ABAC API is called to verify the attribute, just if the value is verified the counter will be incremented.
+	val, err := stub.ReadCertAttribute("position")
+	fmt.Printf("Position => %v error %v \n", string(val), err)
+	isOk, err := stub.VerifyAttribute("position", []byte("Software Engineer")) // Here the ABAC API is called to verify the attribute, just if the value is verified the counter will be incremented.
 	if err != nil {
 		return nil, err
 	}
-	jsonResp := "{ " +
-					"Attribute Name  01: "+ string(attrVal1) +
-					"Attribute Value  01 : "+ strconv.FormatBool(isPresent) +
-
-				 "}"
-	fmt.Printf("Query Response:%s\n", jsonResp)
+		jsonResp := "{Name:" +
+							"Attribute " + string(val) +
+							"Attr Value" + strconv.FormatBool(isOk) +
+							"}"
 
 	bytes, err := json.Marshal(jsonResp)
 	if err != nil {
-		return nil, errors.New("Error converting kyc record")
+		return nil, errors.New("Error .....")
 	}
 	return bytes, nil
 }
