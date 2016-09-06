@@ -57,7 +57,7 @@ func (t *ServicesChaincode) Query(stub *shim.ChaincodeStub, function string, arg
 	if function == "read" {
 		return read(stub, args)
 	}else {
-	   return readAttr(stub, args)
+	 	return readAttr(stub, args)
 	}
 	return nil, errors.New("Invalid query function name. Expecting \"read\"")
 }
@@ -106,7 +106,7 @@ func read(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
 
 	jsonResp := "{\"Name\":\"counter\",\"Amount\":\"" + string(Avalbytes) +
 							"Attribute " + string(val) +
-							"Attr Value " + isOk +
+							"Attr Value " + strconv.FormatBool(isOk) +
 							"\"}"
 	fmt.Printf("Query Response:%s\n", jsonResp)
 
