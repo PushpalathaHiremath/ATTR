@@ -56,24 +56,25 @@ func (t *ServicesChaincode) Invoke(stub *shim.ChaincodeStub, function string, ar
 func (t *ServicesChaincode) Query(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
 	if function == "read" {
 		return read(stub, args)
-	}else{
-	//	attrVal1, err := stub.ReadCertAttribute("position")
+	}else {
+		attrVal1, err := stub.ReadCertAttribute("position")
 		isPresent, err := stub.VerifyAttribute("position", []byte("Software Engineer")) // Here the ABAC API is called to verify the attribute, just if the value is verified the counter will be incremented.
 		if err != nil {
 			return nil, err
 		}
 
-		attrVal2, err := stub.ReadCertAttribute("company")
+		// attrVal2, err := stub.ReadCertAttribute("position")
 	//	cert, _ := stub.GetCallerCertificate()
 	//	metadataStr, _ := stub.GetCallerMetadata()
 
 		jsonResp := "{ " +
 			//Attribute Name  01 : "+ string(attrVal1) +
-									"Attribute Value  01 : "+ strconv.FormatBool(isPresent) +
-									"Attribute Name  02 : "+ string(attrVal2) +
+					  "Attribute Name  01: "+ string(attrVal1) +
+			     	"Attribute Value  01 : "+ strconv.FormatBool(isPresent) +
+
   						   //  "Certificate : "  + string(cert) +
 								//	 "Metadata : " + string(metadataStr) +
-								"}"
+			     "}"
 		fmt.Printf("Query Response:%s\n", jsonResp)
 
 		bytes, err := json.Marshal(jsonResp)
