@@ -62,18 +62,10 @@ func (t *ServicesChaincode) Query(stub *shim.ChaincodeStub, function string, arg
 		if err != nil {
 			return nil, err
 		}
-
-		// attrVal2, err := stub.ReadCertAttribute("position")
-	//	cert, _ := stub.GetCallerCertificate()
-	//	metadataStr, _ := stub.GetCallerMetadata()
-
 		jsonResp := "{ " +
-			//Attribute Name  01 : "+ string(attrVal1) +
 					  "Attribute Name  01: "+ string(attrVal1) +
-			     	"Attribute Value  01 : "+ strconv.FormatBool(isPresent) +
+			    // 	"Attribute Value  01 : "+ strconv.FormatBool(isPresent) +
 
-  						   //  "Certificate : "  + string(cert) +
-								//	 "Metadata : " + string(metadataStr) +
 			     "}"
 		fmt.Printf("Query Response:%s\n", jsonResp)
 
