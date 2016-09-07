@@ -11,7 +11,7 @@ import (
 	"fmt"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	"strconv"
-	"github.com/op/go-logging"
+	"github.com/hyperledger/fabric/vendor/github.com/op/go-logging"
 )
 
 var myLogger = logging.MustGetLogger("example")
