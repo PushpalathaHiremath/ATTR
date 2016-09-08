@@ -11,16 +11,16 @@ import (
 	"fmt"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	"strconv"
-	"github.com/op/go-logging"
+//	"github.com/op/go-logging"
 )
 
-var myLogger = logging.MustGetLogger("customer_address_details")
+//var myLogger = logging.MustGetLogger("customer_address_details")
 
 type ServicesChaincode struct {
 }
 
 func (t *ServicesChaincode) Init(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
-	myLogger.Debug("Test Test Test ...")
+//	myLogger.Debug("Test Test Test ...")
 	err := stub.PutState("counter", []byte("0"))
 	return nil, err
 }
