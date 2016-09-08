@@ -11,8 +11,10 @@ import (
 	"fmt"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	"strconv"
+	"github.com/op/go-logging"
 )
 
+var myLogger = logging.MustGetLogger("customer_address_details")
 type ServicesChaincode struct {
 }
 
