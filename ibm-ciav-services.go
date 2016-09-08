@@ -11,16 +11,12 @@ import (
 	"fmt"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	"strconv"
-//	"github.com/op/go-logging"
 )
-
-//var myLogger = logging.MustGetLogger("customer_address_details")
 
 type ServicesChaincode struct {
 }
 
 func (t *ServicesChaincode) Init(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
-//	myLogger.Debug("Test Test Test ...")
 	err := stub.PutState("counter", []byte("0"))
 	return nil, err
 }
@@ -98,8 +94,16 @@ func read(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
 		return nil, errors.New(jsonResp)
 	}
 
-	jsonResp := "{\"counter\" : " + string(Avalbytes) +
-							"\"}"
+	isOk, _ := stub.VerifyAttribute("position", []byte("Software Engineer"))
+	var jsonResp string
+	if isOk {
+		jsonResp = "{\"counter1\" : " + string(Avalbytes) +
+								"\"}"
+	}else{
+		jsonResp = "{\"counter2\" : " + string(Avalbytes) +
+								"\"}"
+	}
+
 	fmt.Printf("Query Response:%s\n", jsonResp)
 
 	bytes, err := json.Marshal(jsonResp)
