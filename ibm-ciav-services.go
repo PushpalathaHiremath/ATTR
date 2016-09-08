@@ -22,7 +22,7 @@ func (t *ServicesChaincode) Init(stub *shim.ChaincodeStub, function string, args
 }
 
 
-func (t *AuthorizableCounterChaincode) Invoke(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
+func (t *ServicesChaincode) Invoke(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
 	if function != "increment" {
 		return nil, errors.New("Invalid invoke function name. Expecting \"increment\"")
 	}
