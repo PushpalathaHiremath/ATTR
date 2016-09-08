@@ -6,8 +6,8 @@ Licensed under the IBM India Pvt Ltd, Version 1.0 (the "License");
 package main
 
 import (
-	"encoding/json"
 	"errors"
+	"encoding/json"
 	"fmt"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	"strconv"
@@ -21,17 +21,14 @@ func (t *ServicesChaincode) Init(stub *shim.ChaincodeStub, function string, args
 	return nil, err
 }
 
-func (t *ServicesChaincode) Invoke(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
 
+func (t *AuthorizableCounterChaincode) Invoke(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
 	if function != "increment" {
 		return nil, errors.New("Invalid invoke function name. Expecting \"increment\"")
 	}
 	val, err := stub.ReadCertAttribute("position")
 	fmt.Printf("Position => %v error %v \n", string(val), err)
-	isOk, err := stub.VerifyAttribute("position", []byte("Software Engineer")) // Here the ABAC API is called to verify the attribute, just if the value is verified the counter will be incremented.
-	if err != nil {
-		return nil, err
-	}
+	isOk, _ := stub.VerifyAttribute("position", []byte("Software Engineer")) // Here the ABAC API is called to verify the attribute, just if the value is verified the counter will be incremented.
 	if isOk {
 		counter, err := stub.GetState("counter")
 		if err != nil {
@@ -46,17 +43,18 @@ func (t *ServicesChaincode) Invoke(stub *shim.ChaincodeStub, function string, ar
 		counter = []byte(strconv.Itoa(cInt))
 		stub.PutState("counter", counter)
 	}
-	return val, nil
+	return nil, nil
+
 }
 
 /*
-	Get Customer record by customer id or PAN number
+ 		Get Customer record by customer id or PAN number
 */
 func (t *ServicesChaincode) Query(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
 	if function == "read" {
 		return read(stub, args)
-	} else {
-		return readAttr(stub, args)
+	}else {
+	 	return readAttr(stub, args)
 	}
 	return nil, errors.New("Invalid query function name. Expecting \"read\"")
 }
@@ -68,10 +66,10 @@ func readAttr(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
 		return nil, err
 	}
 	jsonResp := "{ " +
-		"Attribute Name  01: " + string(attrVal1) +
-		"Attribute Value  01 : " + strconv.FormatBool(isPresent) +
+					"Attribute Name  01: "+ string(attrVal1) +
+					"Attribute Value  01 : "+ strconv.FormatBool(isPresent) +
 
-		"}"
+				 "}"
 	fmt.Printf("Query Response:%s\n", jsonResp)
 
 	bytes, err := json.Marshal(jsonResp)
@@ -80,6 +78,7 @@ func readAttr(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
 	}
 	return bytes, nil
 }
+
 
 func read(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
 	var err error
@@ -96,7 +95,7 @@ func read(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
 	}
 
 	jsonResp := "{\"counter\" : " + string(Avalbytes) +
-		"\"}"
+							"\"}"
 	fmt.Printf("Query Response:%s\n", jsonResp)
 
 	bytes, err := json.Marshal(jsonResp)
