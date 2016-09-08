@@ -94,7 +94,7 @@ func read(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
 		return nil, errors.New(jsonResp)
 	}
 
-	isOk, _ := stub.VerifyAttribute("position", []byte("Software Engineer"))
+	isOk, _ := stub.VerifyAttribute("position123", []byte("Software Engineer"))
 	var jsonResp string
 	if isOk {
 		jsonResp = "{\"counter1\" : " + string(Avalbytes) +
